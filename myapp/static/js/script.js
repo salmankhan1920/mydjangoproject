@@ -1,3 +1,5 @@
+console.log('hello')
+
 
 var filename = ''
 
@@ -81,7 +83,7 @@ function enableUploadButton() {
 
             // Save the filename in a variable
             filename = fileInput.files[0].name;
-            console.log('File name:', filename);
+           //console.log(' name:', filename);
         });
     } else {
         uploadButton.disabled = true;
@@ -110,7 +112,7 @@ function handleWebSockets() {
     // Generate a UUID for the room name
     const roomName = 'id' + Math.random().toString(16).slice(2);
 
-    console.log(roomName);
+   // console.log(roomName);
 
     // Create a WebSocket connection
     var socket = new WebSocket('ws://127.0.0.1:8000/ws/upload_selfie/' + roomName + '/');
@@ -126,7 +128,7 @@ function handleWebSockets() {
 
     // Listen for messages
     socket.addEventListener('message', function(event) {
-        console.log('Message from server ', event.data);
+       // console.log('Message from server ', event.data);
 
         // Parse the message data
         const message = JSON.parse(event.data);
@@ -142,7 +144,91 @@ function handleWebSockets() {
                  };
 
              socket.send(JSON.stringify(message))
-        } else if (message === 'lion') {
+        } else if (message.message === 'result') {
+           
+             let imageName = message.image_names
+
+             var imageNames =  imageName  // Assuming python_image_list is the variable containing the Python list
+
+             // Construct the base URL using window.location.host
+             var baseUrl = window.location.protocol + '//' + window.location.host;
+     
+            // Calculate the number of pages and the start index for the current page
+var totalImages = imageNames.length;
+var pageSize = 5;
+var totalPages = Math.ceil(totalImages / pageSize);
+
+// Function to display the images for the current page
+function displayImages(pageNumber) {
+    var startIndex = (pageNumber - 1) * pageSize;
+    var endIndex = startIndex + pageSize;
+    var imagesContainer = document.getElementById('imageContainer');
+    imagesContainer.innerHTML = ''; // Clear the container
+    for (var i = startIndex; i < endIndex && i < totalImages; i++) {
+        var img = document.createElement('img');
+        img.src = baseUrl + '/media/selfies/' + imageNames[i];  // Replace with the actual path to your images
+        img.alt = imageNames[i];
+        imagesContainer.appendChild(img);
+    }
+}
+
+// Display the images for the first page
+displayImages(1);
+
+// Create pagination buttons
+var paginationContainer = document.createElement('div');
+paginationContainer.classList.add('pagination');
+for (var i = 1; i <= totalPages; i++) {
+    var button = document.createElement('button');
+    button.classList.add('pagination-button')
+    button.textContent = i;
+    button.addEventListener('click', function() {
+         // Change the background color of the clicked button to gray
+        this.style.backgroundColor = 'gray';
+         // Change the background color of all other buttons to blue
+         var buttons = paginationContainer.getElementsByTagName('button');
+         for (var j = 0; j < buttons.length; j++) {
+             if (buttons[j] !== this) {
+                 buttons[j].style.backgroundColor = '#007bff';
+             }
+         }
+
+
+        displayImages(parseInt(this.textContent));
+    });
+    paginationContainer.appendChild(button);
+}
+
+document.body.appendChild(paginationContainer);
+
+// Create a function to handle the click event of the "Download All Images" button
+function downloadAllImages() {
+    // Loop through the imageNames array and initiate the download for each image
+    imageNames.forEach(function(imageName) {
+      var link = document.createElement('a');
+      link.href = baseUrl + '/media/selfies/' + imageName;
+      link.download = imageName;
+      link.click();
+    });
+  }
+  
+  // Create the "Download All Images" button
+  var downloadButton = document.createElement('button');
+  downloadButton.textContent = 'Download All Images';
+  downloadButton.classList.add('download-button')
+  /*
+  downloadButton.style.marginTop = "10px";
+  downloadButton.style.backgroundColor = "#007bff";
+  downloadButton.style.color = 'white';
+  downloadButton.style.cursor = "pointer";
+  */
+  downloadButton.addEventListener('click', downloadAllImages);
+  document.body.appendChild(downloadButton);
+  
+
+            
+                    
+            
             // Display lion image
         } else {
             // Display a default image or provide a fallback

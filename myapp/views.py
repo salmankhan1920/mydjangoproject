@@ -99,3 +99,38 @@ def testing(request):
 
 def serve_media(request, path):
     return static.serve(request, path, document_root=settings.MEDIA_ROOT)
+
+
+'''
+def site_admin(request):
+  if request.method == 'POST':
+    formData = request.FILES
+    print('formdata', formData)
+    for file in formData:
+        print('file', file)
+        # Handle the file upload and save it to the server
+        file = formData[file]
+
+        images_model = Images.objects.create(image=file)
+        images_model.save()
+   
+    
+    response_data = {'message':'success'}
+    return JsonResponse(response_data)
+
+  else:
+     return render(request, 'site-admin.html')
+     '''
+
+
+
+
+def site_admin(request):
+    if request.method == 'POST':
+       for f in request.FILES.getlist('file'):  # Assuming the file input name is 'file'
+          instance = Images(image=f)  # Replace file_field with your actual file field
+          instance.save()
+       response_data = {'message':'images successfully saved'}
+       return JsonResponse(response_data)
+    else:
+        return render(request, 'site-admin.html')

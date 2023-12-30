@@ -11,6 +11,7 @@ urlpatterns = [
     path('done/', views.done, name='done'),
     path('testing/', views.testing),
     path('media/<path:path>', views.serve_media, name='media'),
-   # path('media/selfies/<str:image_name>', views.serve_media)
+    path('site-admin/' , views.site_admin, name='site-admin')
+   
 
 ] 

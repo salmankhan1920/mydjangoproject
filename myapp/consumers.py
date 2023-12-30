@@ -99,11 +99,9 @@ class SelfieConsumer(AsyncWebsocketConsumer):
         ) 
             result = await get_images(self.image_name)
 
-            print(result)
-
             if result:
                 print(result)
-                await self.send(text_data=json.dumps({'message':result}))
+                await self.send(text_data=json.dumps({'message':'result', 'image_names':result}))
             else:
                 print('hi')
     

@@ -1,3 +1,4 @@
+console.log('hello')
 
 var filename = ''
 
@@ -81,7 +82,7 @@ function enableUploadButton() {
 
             // Save the filename in a variable
             filename = fileInput.files[0].name;
-            console.log('File name:', filename);
+           //console.log(' name:', filename);
         });
     } else {
         uploadButton.disabled = true;
@@ -126,7 +127,7 @@ function handleWebSockets() {
 
     // Listen for messages
     socket.addEventListener('message', function(event) {
-        console.log('Message from server ', event.data);
+       // console.log('Message from server ', event.data);
 
         // Parse the message data
         const message = JSON.parse(event.data);
@@ -142,7 +143,9 @@ function handleWebSockets() {
                  };
 
              socket.send(JSON.stringify(message))
-        } else if (message === 'lion') {
+        } else if (message.message === 'result') {
+             let imageNames = message.image_name
+             console.log('imagenames', imageNames)
             // Display lion image
         } else {
             // Display a default image or provide a fallback
