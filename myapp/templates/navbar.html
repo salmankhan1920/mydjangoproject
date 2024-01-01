@@ -1,0 +1,48 @@
+{%load static%}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
+  <title>Responsive Sidebar</title>
+</head>
+<body>
+  <div class="header"></div>
+    <input type="checkbox" id="openSidebarMenu">
+    <label for="openSidebarMenu" class="sidebarIconToggle">
+        <div class="spinner top"></div>
+        <div class="spinner middle"></div>
+        <div class="spinner bottom"></div>
+    </label>
+    <div id="sidebarMenu">
+        <ul class="menu">
+            <li><a href="{% url 'upload_selfie' %}">Home</a></li>
+            <li><a href="#">Gallery</a></li>
+            <li><a href="#">selfies</a></li>
+            <li><a href="#">LogOut</a></li>
+        </ul>
+    </div>
+    <div class="main">
+        <h1>Upload Your Images Below</h1>
+        <div class="form-container">
+
+          <form method="post" enctype="multipart/form-data">
+            {%csrf_token%}
+          <input type="file" id="imageInput" name="image" multiple>
+          <button id="uploadButton" disabled style="cursor: pointer;">Upload</button>
+      
+          </form>
+      
+          </div>
+      
+          <!-- HTML code for the progress bar -->
+      
+      
+          <progress id="progressBar"></progress>    </div>
+  <script type="text/javascript" src="{% static 'js/navbar.js' %}"></script>
+
+</body>
+</html>

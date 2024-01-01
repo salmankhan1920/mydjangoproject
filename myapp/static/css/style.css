@@ -102,3 +102,10 @@
     background-color: lightblue;
     transition: background-color 0.3s;
   }
+
+
+  .h2-text {
+    text-align: center;
+    color: lightgreen;
+    
+  }

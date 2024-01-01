@@ -12,6 +12,10 @@ from .models import Images, UploadedSelfie
 from django.conf import settings
 from django.views import static
 
+from django.core.paginator import Paginator
+
+
+#pagination classes
 
 
 # Create your views here.
@@ -32,16 +36,6 @@ def upload_selfie(request):
     else:
         response_data = {'message': 'No face'}
         return JsonResponse(response_data)
-    
-    # Check if the image has been successfully saved
-    '''
-    if UploadedSelfie.objects.filter(selfie=image).exists():
-        response_data = {'message': 'Image uploaded successfully'}
-        return JsonResponse(response_data)
-    else:
-        response_data = {'message': 'Image not saved'}
-        return JsonResponse(response_data)
-        '''
 
    else:
 
@@ -57,35 +51,7 @@ def get_images(request):
         return render(request, "get_images.html")
 
 
-"""
 
-def backend(request):
-    if request.method == 'POST':
-        form = ImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('image upload successfull')
-    else:
-        form = ImageForm()
-    return render(request, 'backend.html', {'form':form})
-"""
-
-
-class backend(FormView):
-    template_name = "backend.html"
-    form_class = UploadForm
-    success_url = "/done/"
-
-    def form_valid(self, form):
-        for each in form.cleaned_data["attachments"]:
-            print("each", each)
-            print("form", form)
-            Images.objects.create(image=each)
-        return super(backend, self).form_valid(form)
-
-
-def done(request):
-    return render(request, "done.html")
 
 
 
@@ -96,35 +62,15 @@ def testing(request):
 
 
 
-
+#to serve static files to users
 def serve_media(request, path):
     return static.serve(request, path, document_root=settings.MEDIA_ROOT)
 
 
-'''
-def site_admin(request):
-  if request.method == 'POST':
-    formData = request.FILES
-    print('formdata', formData)
-    for file in formData:
-        print('file', file)
-        # Handle the file upload and save it to the server
-        file = formData[file]
-
-        images_model = Images.objects.create(image=file)
-        images_model.save()
-   
-    
-    response_data = {'message':'success'}
-    return JsonResponse(response_data)
-
-  else:
-     return render(request, 'site-admin.html')
-     '''
 
 
 
-
+#to upload images in the admin databse
 def site_admin(request):
     if request.method == 'POST':
        for f in request.FILES.getlist('file'):  # Assuming the file input name is 'file'
@@ -134,3 +80,33 @@ def site_admin(request):
        return JsonResponse(response_data)
     else:
         return render(request, 'site-admin.html')
+
+
+
+
+def navbar(request):
+    return render(request, 'navbar.html')
+
+
+'''
+def gallery(request):
+    images = Images.objects.all()
+    return render(request, 'gallery.html', {'images':images})
+
+    '''
+
+
+def gallery(request):
+    image_list = Images.objects.all().order_by('-uploaded_at')   # Assuming Images is the model for your images
+    paginator = Paginator(image_list, 10)  # Show 10 images per page
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'gallery.html', {'page_obj': page_obj, 'paginator':paginator})
+
+
+
+
+def test(request):
+    return render(request, 'test.html')

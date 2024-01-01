@@ -8,7 +8,9 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-image_folder = os.path.join(BASE_DIR, "media", "selfies")
+image_folder = os.path.join(BASE_DIR, "media", "images")
+
+selfie_folder = os.path.join(BASE_DIR, "media", "selfies")
 
 
 
@@ -16,7 +18,7 @@ image_folder = os.path.join(BASE_DIR, "media", "selfies")
 # function to check if face is found in the image
 @sync_to_async
 def get_images(image_url):
-        file_path = image_folder + "/" + image_url
+        file_path = selfie_folder + "/" + image_url
 
 
         matching_images = []

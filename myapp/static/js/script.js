@@ -166,7 +166,7 @@ function displayImages(pageNumber) {
     imagesContainer.innerHTML = ''; // Clear the container
     for (var i = startIndex; i < endIndex && i < totalImages; i++) {
         var img = document.createElement('img');
-        img.src = baseUrl + '/media/selfies/' + imageNames[i];  // Replace with the actual path to your images
+        img.src = baseUrl + '/media/images/' + imageNames[i];  // Replace with the actual path to your images
         img.alt = imageNames[i];
         imagesContainer.appendChild(img);
     }
