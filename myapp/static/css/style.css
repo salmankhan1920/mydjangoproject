@@ -109,3 +109,25 @@
     color: lightgreen;
     
   }
+
+
+
+  @keyframes blink {
+    0% { opacity: 0; }
+    50% { opacity:1; }
+    100% { opacity:0; }
+  }
+  .blink {
+    animation: blink 1s infinite;
+  }
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .hidden {
+    display: none;
+   
+  } 
+

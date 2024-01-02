@@ -3,13 +3,41 @@ console.log('hello')
 
 var filename = ''
 
+var otherElements = document.querySelectorAll('body > *:not(.container, body)');
+var imagesContainer = document.getElementById('imageContainer');
+
 function enableUploadButton() {
     var fileInput = document.getElementById('image-input');
     var uploadButton = document.getElementById('upload-button');
+    var uploadText = document.getElementById('uploadText');
+    var otherElements = document.querySelectorAll('body > *:not(.container, body)');
+
     if (fileInput.value) {
         uploadButton.disabled = false;
         uploadButton.addEventListener('click', function(event) {
-            event.preventDefault();
+             event.preventDefault();
+             // hide other elements
+      otherElements.forEach(function(element) {
+        element.classList.add('hidden');
+      });
+
+      
+
+
+      // show upload text
+      uploadText.style.display = 'block';
+
+      setInterval(function() {
+        document.querySelector('.dot1').classList.toggle('blink');
+        setTimeout(function() {
+          document.querySelector('.dot2').classList.toggle('blink');
+        }, 250);
+        setTimeout(function() {
+          document.querySelector('.dot3').classList.toggle('blink');
+        }, 500);
+      }, 1000);
+
+
             var formData = new FormData();
             formData.append('image', fileInput.files[0]);
 
@@ -27,9 +55,37 @@ function enableUploadButton() {
                     if (responseJson.message === 'Face found') {
                         // Update the webpage content here
                         document.getElementById('response-container').innerHTML = 'Fetching your images';
+                        uploadText.textContent = "Finding Your Images";
+                        // Change the text content of the h2 element
+
+
+                        // Create and append the span elements
+                        var dot1 = document.createElement('span');
+                        dot1.textContent = ".";
+                        dot1.classList.add('dot1');
+                        uploadText.appendChild(dot1);
+
+                        var dot2 = document.createElement('span');
+                        dot2.textContent = ".";
+                        dot2.classList.add('dot2');
+                        uploadText.appendChild(dot2);
+
+                        var dot3 = document.createElement('span');
+                        dot3.textContent = ".";
+                        dot3.classList.add('dot3');
+                        uploadText.appendChild(dot3);
 
                         handleWebSockets()
                     } else if (responseJson.message === 'No face') {
+
+                         // show upload text
+                         uploadText.style.display = 'none';
+
+                          // show other elements
+                        otherElements.forEach(function(element) {
+                            element.classList.remove('hidden');
+                        });
+                
 
                         // Clear the file selected in the image-input
                         document.getElementById('image-input').value = '';
@@ -45,11 +101,13 @@ function enableUploadButton() {
                         var paragraph1 = document.createElement('p');
                         paragraph1.style.color = 'red';
                         paragraph1.textContent = 'No face found in the image';
+                        paragraph1.style.textAlign = 'center';
 
                         // Create the second paragraph
                         var paragraph2 = document.createElement('p');
                         paragraph2.style.color = 'red';
                         paragraph2.textContent = 'Please upload a clear image with face clearly visible';
+                        paragraph2.style.textAlign = 'center';
 
                         // Add the paragraphs to the container
                         container.appendChild(paragraph1);
@@ -171,6 +229,21 @@ function displayImages(pageNumber) {
         imagesContainer.appendChild(img);
     }
 }
+
+  // show upload text
+  uploadText.style.display = 'none';
+
+ imagesContainer.classList.remove('hidden');
+
+var h2Element = document.createElement("h2");
+h2Element.textContent = 'Found ' + totalImages + ' Images.';
+//document.body.appendChild(h2Element);
+imagesContainer.parentNode.insertBefore(h2Element, imagesContainer);
+
+
+
+
+
 
 // Display the images for the first page
 displayImages(1);
