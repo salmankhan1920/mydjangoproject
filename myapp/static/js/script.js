@@ -279,7 +279,7 @@ function downloadAllImages() {
     // Loop through the imageNames array and initiate the download for each image
     imageNames.forEach(function(imageName) {
       var link = document.createElement('a');
-      link.href = baseUrl + '/media/selfies/' + imageName;
+      link.href = baseUrl + '/media/images/' + imageName;
       link.download = imageName;
       link.click();
     });
