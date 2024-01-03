@@ -92,20 +92,15 @@ class SelfieConsumer(AsyncWebsocketConsumer):
         if text_data_json['message'] == 'filename':
             self.image_name = text_data_json['filename']
             print('image nameee', self.image_name)
-            await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                'type': 'chat_message',
-                'message': 'function is running'
-           }
-        ) 
+            
             result = await get_images(self.image_name)
 
             if result:
                 print(result)
                 await self.send(text_data=json.dumps({'message':'result', 'image_names':result}))
             else:
-                print('hi')
+                await self.send(text_data=json.dumps({'message':'no images found matching the face'}))
+                print('no images found matching the face')
     
 
     async def chat_message(self, event):

@@ -6,6 +6,14 @@ var filename = ''
 var otherElements = document.querySelectorAll('body > *:not(.container, body)');
 var imagesContainer = document.getElementById('imageContainer');
 
+// container
+var uploadTextcontainer = document.getElementById("uploadTextContainer")
+
+// upload text refresh
+var uploadTextRefresh = document.getElementById("uploadText-refresh");
+
+
+
 function enableUploadButton() {
     var fileInput = document.getElementById('image-input');
     var uploadButton = document.getElementById('upload-button');
@@ -21,8 +29,9 @@ function enableUploadButton() {
         element.classList.add('hidden');
       });
 
-      
+      // show uploadText container
 
+      uploadTextcontainer.classList.remove('hidden');
 
       // show upload text
       uploadText.style.display = 'block';
@@ -230,7 +239,7 @@ function displayImages(pageNumber) {
     }
 }
 
-  // show upload text
+  // hide upload text
   uploadText.style.display = 'none';
 
  imagesContainer.classList.remove('hidden');
@@ -243,6 +252,7 @@ imagesContainer.parentNode.insertBefore(h2Element, imagesContainer);
 
 
 
+uploadTextcontainer.classList.add('hidden');
 
 
 // Display the images for the first page
@@ -302,9 +312,64 @@ function downloadAllImages() {
             
                     
             
-            // Display lion image
-        } else {
-            // Display a default image or provide a fallback
+            // no images found
+        } else if (message.message = 'no images found matching the face') {
+           
+             // hide upload text
+           uploadText.style.display = 'none';
+
+           // hide upload refresh warning
+           uploadTextRefresh.style.display = 'none';
+          
+        
+
+
+            let paragraphTwo = document.createElement('p');
+            paragraphTwo.textContent = 'No Images Found Matching The Face'
+            paragraphTwo.style.textAlign = 'center;'
+            paragraphTwo.style.color = 'red';
+            paragraphTwo.style.marginBottom = '20px';
+           
+           
+            
+
+            //document.body.appendChild(paragraphTwo);
+            uploadTextcontainer.appendChild(paragraphTwo);
+
+            
+
+            // Create a new paragraph element
+            var paragraph = document.createElement("p");
+
+            // Create a new link element
+            var link = document.createElement("a");
+
+            // Set the text content of the link
+            link.textContent = "Click Here To Back To The Home Page";
+
+            // Add click event to the link to refresh the page
+            link.addEventListener("click", function(event) {
+            event.preventDefault(); // Prevent the default behavior of the link
+            location.reload(); // Refresh the page
+            });
+
+            // Append the link to the paragraph
+            paragraph.appendChild(link);
+
+            paragraph.style.cursor = 'pointer';
+
+            paragraph.style.color = 'blue';
+
+
+            uploadTextcontainer.appendChild(paragraph);
+
+         
+           
+        }
+
+        else {
+
+         // Display a default image or provide a fallback
         }
     });
 

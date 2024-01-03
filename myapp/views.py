@@ -88,12 +88,6 @@ def navbar(request):
     return render(request, 'navbar.html')
 
 
-'''
-def gallery(request):
-    images = Images.objects.all()
-    return render(request, 'gallery.html', {'images':images})
-
-    '''
 
 
 def gallery(request):
