@@ -22,10 +22,9 @@
     background-color: #f0f0f0;
     color: #000000;
     padding: 10px 20px;
-    text-transform: uppercase;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
+   
 }
 
 #upload-button:hover {

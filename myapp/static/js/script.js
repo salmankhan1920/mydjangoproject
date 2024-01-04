@@ -63,7 +63,7 @@ function enableUploadButton() {
                     // Compare the response JSON object
                     if (responseJson.message === 'Face found') {
                         // Update the webpage content here
-                        document.getElementById('response-container').innerHTML = 'Fetching your images';
+                       // document.getElementById('response-container').innerHTML = 'Fetching your images';
                         uploadText.textContent = "Finding Your Images";
                         // Change the text content of the h2 element
 
@@ -87,13 +87,16 @@ function enableUploadButton() {
                         handleWebSockets()
                     } else if (responseJson.message === 'No face') {
 
-                         // show upload text
+                         // hide upload text
                          uploadText.style.display = 'none';
 
                           // show other elements
                         otherElements.forEach(function(element) {
                             element.classList.remove('hidden');
                         });
+                        
+                         //hide upload text container
+                        uploadTextcontainer.classList.add('hidden');
                 
 
                         // Clear the file selected in the image-input
@@ -370,6 +373,17 @@ function downloadAllImages() {
         else {
 
          // Display a default image or provide a fallback
+         otherElements.forEach(function(element) {
+            element.classList.add('hidden');
+          });
+
+          let paragraph = document.createElement('p');
+
+          paragraph.textContent = 'Some Unknown Error Occured';
+
+          uploadTextcontainer.appendChild(paragraph)
+    
+
         }
     });
 

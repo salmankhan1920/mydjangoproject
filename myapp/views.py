@@ -14,6 +14,13 @@ from django.views import static
 
 from django.core.paginator import Paginator
 
+#login, logout
+from django.contrib.auth import login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+
+
+
 
 #pagination classes
 
@@ -71,6 +78,7 @@ def serve_media(request, path):
 
 
 #to upload images in the admin databse
+@login_required(login_url='/login')
 def site_admin(request):
     if request.method == 'POST':
        for f in request.FILES.getlist('file'):  # Assuming the file input name is 'file'
@@ -89,7 +97,7 @@ def navbar(request):
 
 
 
-
+@login_required(login_url='/login')
 def gallery(request):
     image_list = Images.objects.all().order_by('-uploaded_at')   # Assuming Images is the model for your images
     paginator = Paginator(image_list, 10)  # Show 10 images per page
@@ -103,4 +111,32 @@ def gallery(request):
 
 
 def test(request):
+    # Get all objects of the model
+    all_objects = Images.objects.all()
+
+# Delete all objects and their associated files
+    for obj in all_objects:
+       obj.delete()
     return render(request, 'test.html')
+
+
+
+
+
+
+
+def login_dashboard(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = User.objects.filter(username=username).first()
+
+        if user and user.is_staff:
+            login(request, user)
+            return redirect('site-admin')
+        else:
+            return render(request, 'login_form.html', {'message': 'Your username or password is incorrect.'})
+    else:
+
+        return render(request, 'login_form.html')

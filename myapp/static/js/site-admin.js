@@ -54,10 +54,17 @@ uploadButton.addEventListener('click', (event) => {
           h2.style.color = 'lightgreen';
           h2.style.textAlign = 'center'; 
           document.body.insertBefore(h2, document.body.firstChild);
+
+          imageInput.value = '';
         }
         // Handle the successful upload, e.g., show success message
       } else {
         // Handle the upload error
+        const h2 = document.createElement('h2');
+        h2.textContent = `Some Error Occured, Images Could Not Be Uploaded`;
+        h2.style.color = 'red';
+        h2.style.textAlign = 'center'; 
+        document.body.insertBefore(h2, document.body.firstChild);
       }
     };
   
